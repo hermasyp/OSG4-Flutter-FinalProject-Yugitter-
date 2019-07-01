@@ -1,14 +1,14 @@
 // To parse this JSON data, do
 //
-//     final card = cardFromJson(jsonString);
+//     final cardData = cardDataFromJson(jsonString);
 
 import 'dart:convert';
 
-List<Card> cardFromJson(String str) => new List<Card>.from(json.decode(str).map((x) => Card.fromJson(x)));
+List<CardData> cardDataFromJson(String str) => new List<CardData>.from(json.decode(str).map((x) => CardData.fromJson(x)));
 
-String cardToJson(List<Card> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
+String cardDataToJson(List<CardData> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Card {
+class CardData {
   String id;
   String name;
   String type;
@@ -18,8 +18,13 @@ class Card {
   List<CardSet> cardSets;
   List<CardImage> cardImages;
   CardPrices cardPrices;
+  String atk;
+  String def;
+  String level;
+  String attribute;
+  BanlistInfo banlistInfo;
 
-  Card({
+  CardData({
     this.id,
     this.name,
     this.type,
@@ -29,18 +34,28 @@ class Card {
     this.cardSets,
     this.cardImages,
     this.cardPrices,
+    this.atk,
+    this.def,
+    this.level,
+    this.attribute,
+    this.banlistInfo,
   });
 
-  factory Card.fromJson(Map<String, dynamic> json) => new Card(
+  factory CardData.fromJson(Map<String, dynamic> json) => new CardData(
     id: json["id"],
     name: json["name"],
     type: json["type"],
     desc: json["desc"],
     race: json["race"],
-    archetype: json["archetype"],
-    cardSets: new List<CardSet>.from(json["card_sets"].map((x) => CardSet.fromJson(x))),
+    archetype: json["archetype"] == null ? null : json["archetype"],
+    cardSets: json["card_sets"] == null ? null : new List<CardSet>.from(json["card_sets"].map((x) => CardSet.fromJson(x))),
     cardImages: new List<CardImage>.from(json["card_images"].map((x) => CardImage.fromJson(x))),
     cardPrices: CardPrices.fromJson(json["card_prices"]),
+    atk: json["atk"] == null ? null : json["atk"],
+    def: json["def"] == null ? null : json["def"],
+    level: json["level"] == null ? null : json["level"],
+    attribute: json["attribute"] == null ? null : json["attribute"],
+    banlistInfo: json["banlist_info"] == null ? null : BanlistInfo.fromJson(json["banlist_info"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -49,10 +64,35 @@ class Card {
     "type": type,
     "desc": desc,
     "race": race,
-    "archetype": archetype,
-    "card_sets": new List<dynamic>.from(cardSets.map((x) => x.toJson())),
+    "archetype": archetype == null ? null : archetype,
+    "card_sets": cardSets == null ? null : new List<dynamic>.from(cardSets.map((x) => x.toJson())),
     "card_images": new List<dynamic>.from(cardImages.map((x) => x.toJson())),
     "card_prices": cardPrices.toJson(),
+    "atk": atk == null ? null : atk,
+    "def": def == null ? null : def,
+    "level": level == null ? null : level,
+    "attribute": attribute == null ? null : attribute,
+    "banlist_info": banlistInfo == null ? null : banlistInfo.toJson(),
+  };
+}
+
+class BanlistInfo {
+  String banTcg;
+  String banOcg;
+
+  BanlistInfo({
+    this.banTcg,
+    this.banOcg,
+  });
+
+  factory BanlistInfo.fromJson(Map<String, dynamic> json) => new BanlistInfo(
+    banTcg: json["ban_tcg"],
+    banOcg: json["ban_ocg"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "ban_tcg": banTcg,
+    "ban_ocg": banOcg,
   };
 }
 
@@ -111,7 +151,7 @@ class CardPrices {
 class CardSet {
   String setName;
   String setCode;
-  String setRarity;
+  SetRarity setRarity;
   String setPrice;
 
   CardSet({
@@ -124,14 +164,40 @@ class CardSet {
   factory CardSet.fromJson(Map<String, dynamic> json) => new CardSet(
     setName: json["set_name"],
     setCode: json["set_code"],
-    setRarity: json["set_rarity"],
+    setRarity: setRarityValues.map[json["set_rarity"]],
     setPrice: json["set_price"],
   );
 
   Map<String, dynamic> toJson() => {
     "set_name": setName,
     "set_code": setCode,
-    "set_rarity": setRarity,
+    "set_rarity": setRarityValues.reverse[setRarity],
     "set_price": setPrice,
   };
+}
+
+enum SetRarity { COMMON, SUPER_RARE, SHORT_PRINT, DUEL_TERMINAL_NORMAL_PARALLEL, RARE, SECRET_RARE, ULTRA_RARE }
+
+final setRarityValues = new EnumValues({
+  "Common": SetRarity.COMMON,
+  "Duel Terminal Normal Parallel ": SetRarity.DUEL_TERMINAL_NORMAL_PARALLEL,
+  "Rare": SetRarity.RARE,
+  "Secret Rare": SetRarity.SECRET_RARE,
+  "Short Print": SetRarity.SHORT_PRINT,
+  "Super Rare": SetRarity.SUPER_RARE,
+  "Ultra Rare": SetRarity.ULTRA_RARE
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    if (reverseMap == null) {
+      reverseMap = map.map((k, v) => new MapEntry(v, k));
+    }
+    return reverseMap;
+  }
 }
