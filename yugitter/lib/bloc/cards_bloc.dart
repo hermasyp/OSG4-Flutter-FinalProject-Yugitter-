@@ -4,11 +4,11 @@ import 'package:yugitter/resources/card_repository.dart';
 
 class CardsBloc{
   final _repository = CardRepository();
-  final _cardsFetcher = PublishSubject<List<Card>> ();
-  Observable<List<Card>> get divineCards => _cardsFetcher.stream;
+  final _cardsFetcher = PublishSubject<List<CardData>> ();
+  Observable<List<CardData>> get divineCards => _cardsFetcher.stream;
 
   fetchingCards() async{
-    List<Card> cards = await _repository.getListCards();
+    List<CardData> cards = await _repository.getListCards();
     _cardsFetcher.sink.add(cards);
   }
 
