@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yugitter/ui/page/Home.dart';
 
 void main() => runApp(
   MaterialApp(
@@ -16,6 +17,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
     //todo : adding page
+      body: Home(),
     );
   }
 }
