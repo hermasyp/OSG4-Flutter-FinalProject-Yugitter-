@@ -16,7 +16,6 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
-
   @override
   void initState() {
     cardBloc.fetchingCards();
@@ -26,9 +25,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Yugitter'),
-        ),
         body: StreamBuilder(
             stream: cardBloc.divineCards,
             builder: (context, AsyncSnapshot<List<CardData>> snapshot) {
@@ -40,9 +36,10 @@ class _HomeState extends State<Home> {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            })
-    );
+            }));
   }
+
+
 
   Widget buildList(AsyncSnapshot<List<CardData>> snapshot) {
     return ListView.builder(
