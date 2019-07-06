@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yugitter/ui/page/Home.dart';
+import 'package:yugitter/ui/page/detail.dart';
+import 'package:yugitter/ui/page/home/home.dart';
 
-void main() => runApp(
-  MaterialApp(
-    home: MainPage(),
-  )
-);
+void main() => runApp(MainPage());
 
 class MainPage extends StatefulWidget {
   @override
@@ -15,9 +12,13 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-    //todo : adding page
-      body: Home(),
+    return MaterialApp(
+      theme: ThemeData(fontFamily: 'Poppins'),
+      home: Scaffold(
+        //todo : adding page
+
+        body: Home(),
+      ),
     );
   }
 }
