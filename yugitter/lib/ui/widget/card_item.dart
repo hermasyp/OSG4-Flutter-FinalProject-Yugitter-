@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yugitter/model/cards.dart' as cards;
 import 'package:yugitter/ui/page/detail.dart';
+import 'package:yugitter/ui/widget/separator.dart';
 
 class CardItem extends StatelessWidget {
   CardItem(this._cardItem);
@@ -36,6 +37,7 @@ class CardItem extends StatelessWidget {
                         style: new TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
+                      new Separator(),
                       new Text(
                           'Type : ' + (_cardItem.type != null ? _cardItem.type : "Unknown Type"),
                           style: new TextStyle(
