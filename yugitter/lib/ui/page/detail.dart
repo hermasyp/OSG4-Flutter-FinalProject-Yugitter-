@@ -60,8 +60,8 @@ class _DetailCardState extends State<DetailCard> {
                         new Container(
                           padding: EdgeInsets.all(16),
                           child: new SizedBox(
-                            width: 80.0,
-                            height: 120.0,
+                            width: 140.0,
+                            height: 200.0,
                             child: new Image.network(
                               cardData.cardImages[0].imageUrl,
                               fit: BoxFit.fitHeight,
