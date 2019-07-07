@@ -13,10 +13,10 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Yugitter',
       theme: ThemeData(fontFamily: 'Poppins'),
       home: Scaffold(
         //todo : adding page
-
         body: Home(),
       ),
     );

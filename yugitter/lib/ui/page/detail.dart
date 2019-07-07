@@ -4,14 +4,26 @@ import 'package:yugitter/ui/widget/separator.dart';
 import 'package:yugitter/utils/api_constant.dart';
 import 'package:yugitter/utils/color_utils.dart';
 
-class DetailCard extends StatelessWidget {
+class DetailCard extends StatefulWidget {
   final CardData cardData;
 
   DetailCard({Key key, @required this.cardData}) : super(key: key);
 
   @override
+  _DetailCardState createState() => _DetailCardState(cardData: cardData);
+}
+
+class _DetailCardState extends State<DetailCard> {
+  final GlobalKey<ScaffoldState> _scaffoldstate =
+      new GlobalKey<ScaffoldState>();
+  final CardData cardData;
+
+  _DetailCardState({@required this.cardData}) : super();
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return new Scaffold(
+      key: _scaffoldstate,
       backgroundColor: baseBackground,
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -59,7 +71,7 @@ class DetailCard extends StatelessWidget {
                         new Text(
                           cardData.name,
                           style: new TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.bold),
+                              fontSize: 20.0, fontWeight: FontWeight.bold),
                         ),
                         new Separator(),
                         new Text(
@@ -90,11 +102,11 @@ class DetailCard extends StatelessWidget {
                                     : "Unknown"),
                             style: new TextStyle(
                                 fontSize: 12.0, fontWeight: FontWeight.normal)),
-                        new Separator(),
+                        new Separator(width: 50.0),
                         new Text('Details',
                             style: new TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.bold)),
-                        new Separator(),
+                        new Separator(width: 50.0),
                         new Expanded(
                             child: new Container(
                           margin: EdgeInsets.all(16),
@@ -115,6 +127,14 @@ class DetailCard extends StatelessWidget {
               ),
             )),
       ),
+      floatingActionButton: new FloatingActionButton(
+          child: new Icon(Icons.star),
+          backgroundColor: FlutterColor("#ED213A"),
+          onPressed: () {
+            _scaffoldstate.currentState.showSnackBar(new SnackBar(
+                content:
+                    new Text("\"" + cardData.name + "\"" + " Favorited !")));
+          }),
     );
   }
 }
